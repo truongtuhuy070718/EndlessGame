@@ -5,22 +5,25 @@ USING_NS_CC;
 Vector<Item*> newItems;
 bool isKeyPressedA = false;
 bool isKeyPressedD = false;
+Size edgeSize = Size(375, 812);
 Scene* StartScene::createScene()
 {
+
+
     return StartScene::create();
 }
 
 bool StartScene::init()
 {
-    if ( !Scene::init() )
+    if ( !Scene::initWithPhysics() )
     {
         return false;
     }
     gameStarted = false;
     elapsedTime = 0.0f;
-
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
+   
     startGame();
     // tao car
     //auto xPos = visibleSize.width / 3 + this->roads.at(0)->roadLand1->getContentSize().width + this->roads.at(0)->roadLand2->getContentSize().width / 2;
@@ -58,7 +61,7 @@ bool StartScene::init()
 
 void StartScene::update(float dt)
 {
-
+    
     if (gameStarted) {
         static float elapsedTime = 0.0f;
         // time troi qua
@@ -87,7 +90,7 @@ void StartScene::update(float dt)
                 }
             }
 
-            if (roads.at(i)->getPositionY() < -800)
+            if (roads.at(i)->getPositionY() < -visibleSize.height)
             {
                 if (i != roads.size() - 1) {
                     log("delete road " + i);
@@ -216,4 +219,25 @@ void StartScene::startGame()
 
     int goldCount = 0; 
     goldLabel->setString("Gold: " + std::to_string(goldCount));
+}
+
+void StartScene::onEnter()
+{
+    Scene::onEnter();
+    //auto visibleSize = Director::getInstance()->getVisibleSize();
+    auto physicsWorld = this->getPhysicsWorld();
+    physicsWorld->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL); 
+    auto edgeBody = PhysicsBody::createEdgeBox(Size(375, 812), PHYSICSBODY_MATERIAL_DEFAULT, 3);
+    edgeBody->setDynamic(false);
+    auto edgeNode = Node::create();
+    edgeNode->setPosition(Vec2(edgeSize.width / 2, edgeSize.height / 2));
+
+    edgeNode->setPhysicsBody(edgeBody);
+
+    this->addChild(edgeNode);
+
+    /*auto camera = this->getDefaultCamera();
+    if (camera) {
+        camera->addChild(edgeNode);
+    }*/
 }

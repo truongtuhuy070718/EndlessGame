@@ -1,4 +1,5 @@
 #include "Item.h"
+#include "Game/DefineBitmask.h"
 
 USING_NS_CC;
 
@@ -20,6 +21,7 @@ bool Item::init(ItemType type)
     }
 
     itemType = type;
+
     return true;
 }
 std::string Item::getImagePathForType(ItemType type) {
@@ -28,7 +30,6 @@ std::string Item::getImagePathForType(ItemType type) {
         return "Item/Gold.png";
     case ItemType::Bomb:
         return "Item/Bomb.png";
-        
     default:
         return ""; 
     }

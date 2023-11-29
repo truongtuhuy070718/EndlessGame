@@ -5,7 +5,7 @@
 #include "Item/Item.h"
 #include <vector>
 #include "Car/Car.h"
-
+using namespace std;
 class StartScene : public cocos2d::Scene
 {
 public:
@@ -14,7 +14,7 @@ public:
     virtual bool init();
     void update(float ft) override;
     ItemType getRandomItemType();
-    std::vector<Road*> roads;
+    vector<Road*> roads;
     Car* car;
     // a selector callback
     //void menuCloseCallback(cocos2d::Ref* pSender);
@@ -26,9 +26,7 @@ public:
     
 private: 
     void startGame();
-
-    
-
+    void onEnter();
     bool gameStarted = false;
     float elapsedTime = 1;
 };
